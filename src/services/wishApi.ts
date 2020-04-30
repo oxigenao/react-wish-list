@@ -1,8 +1,7 @@
 import { Wish } from "../models/wish";
-const defaulValue = [{ id: 0, name: "Book Amazon" }];
-
+import { of } from "rxjs";
 const WishApi = {
-  getWish: (): Promise<any> => {
+  getWishes: (): Promise<any> => {
     return new Promise((resolve) => {
       let data: any = window.localStorage.getItem("wish-list") || "[]";
       resolve(JSON.parse(data));

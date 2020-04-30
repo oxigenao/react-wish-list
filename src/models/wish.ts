@@ -3,4 +3,5 @@ export interface Wish {
   name: string;
   url?: string;
   urlImage?: string;
+  done?: boolean;
 }

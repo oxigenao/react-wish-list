@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Wish } from "../../../../models/wish";
 import WishApi from "../../../../services/wishApi";
+import IsStringUrl from "../../../../utils/utils";
 
 function NewWishForm(props: {
   wishListSetter: any;
@@ -19,9 +20,14 @@ function NewWishForm(props: {
       <button
         onClick={() => {
           let newElement = {
-            id: Math.floor(Math.random() * 100),
-            name: inputValue,
+            id:
+              props.actualWishList.reduce((previous, current) => {
+                return previous.id > current.id ? previous : current;
+              }).id + 1,
+            name: IsStringUrl(inputValue) ? "ENLACE" : inputValue,
+            ...(IsStringUrl(inputValue) && { url: inputValue }),
           };
+
           props.wishListSetter([...props.actualWishList, newElement]);
           WishApi.updateWishList([
             ...props.actualWishList,
