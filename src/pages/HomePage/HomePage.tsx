@@ -5,7 +5,6 @@ import WishCard from "./components/WishCard/WishCard";
 import NewWishForm from "./components/NewWishForm/NewWishForm";
 function HomePage() {
   const [wishList, setWishList] = useState([] as Wish[]);
-  const [newWish, setNewWish] = useState(false);
   const onWishDoneChange = (item: Wish) => {
     let auxWishList = [...wishList];
     auxWishList.map((w) => {
@@ -13,6 +12,7 @@ function HomePage() {
       return w;
     });
     setWishList(auxWishList);
+    WishApi.updateWishList(auxWishList);
   };
 
   const onDeleteWish = (itemId: number) => {
@@ -22,6 +22,7 @@ function HomePage() {
       1
     );
     setWishList(auxWishList);
+    WishApi.updateWishList(auxWishList);
   };
 
   useEffect(() => {
@@ -32,20 +33,20 @@ function HomePage() {
 
   return (
     <div className="home-container">
-      {newWish && (
-        <NewWishForm
-          wishListSetter={setWishList}
-          actualWishList={wishList}
-          setNewWoshFormVisible={setNewWish}
-        ></NewWishForm>
-      )}
+      <div className="add-button"></div>
+
+      <NewWishForm
+        wishListSetter={setWishList}
+        actualWishList={wishList}
+      ></NewWishForm>
+
       <div>
         {wishList
           .sort((a: Wish, b: Wish) => {
             if (a.done) return 1;
             else if (b.done) return -1;
-            else if (a.id > b.id) return 1;
-            else return -1;
+            else if (a.id > b.id) return -1;
+            else return 1;
           })
           .map((item: Wish) => {
             return (
@@ -57,15 +58,6 @@ function HomePage() {
               ></WishCard>
             );
           })}
-      </div>
-      <div className="add-button">
-        <button
-          onClick={() => {
-            setNewWish(!newWish);
-          }}
-        >
-          +
-        </button>
       </div>
     </div>
   );

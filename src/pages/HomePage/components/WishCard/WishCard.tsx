@@ -14,7 +14,9 @@ function WishCard(props: {
   return (
     <div className={"wish-card " + (wishElement.done && "wish-card-disabled")}>
       <input
+        className="checkbox-button"
         type="checkbox"
+        checked={wishElement.done}
         onChange={(evt) => {
           setWishElement({
             ...wishElement,
@@ -26,21 +28,37 @@ function WishCard(props: {
           });
         }}
       ></input>
+      <div className="picture"></div>
+      <div className="content">
+        <p className="title">
+          <b>{wishElement.name}</b>
+        </p>
+        <br></br>
+        <span>
+          {wishElement.url && (
+            <a
+              className="action-button"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={wishElement.url}
+            >
+              <span role="img" aria-label="web">
+                🌐
+              </span>
+            </a>
+          )}
+        </span>
+      </div>
       <button
+        className="action-button"
         onClick={() => {
           props.onDeleteWish(wishElement.id);
         }}
       >
-        Delete
+        <span role="img" aria-label="delete">
+          🗑️
+        </span>
       </button>
-      {wishElement.id}
-      {wishElement.name}
-      {wishElement.done ? "Desactivado" : "ACtivado"}
-      {wishElement.url && (
-        <a target="_blank" rel="noopener noreferrer" href={wishElement.url}>
-          link
-        </a>
-      )}
     </div>
   );
 }

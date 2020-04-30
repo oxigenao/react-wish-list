@@ -2,17 +2,14 @@ import React, { useState } from "react";
 import { Wish } from "../../../../models/wish";
 import WishApi from "../../../../services/wishApi";
 import IsStringUrl from "../../../../utils/utils";
-
-function NewWishForm(props: {
-  wishListSetter: any;
-  actualWishList: Wish[];
-  setNewWoshFormVisible: any;
-}) {
+import "./NewWishForm.scss";
+function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
   const [inputValue, setInputValue] = useState("");
 
   return (
     <div className="new-wish-form-container">
       <input
+        className="input-form"
         onChange={(evt) => {
           setInputValue(evt.target.value);
         }}
@@ -33,10 +30,11 @@ function NewWishForm(props: {
             ...props.actualWishList,
             newElement,
           ] as Wish[]);
-          props.setNewWoshFormVisible(false);
         }}
       >
-        Save
+        <span role="img" aria-label="web">
+          💾
+        </span>
       </button>
     </div>
   );
