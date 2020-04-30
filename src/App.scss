@@ -5,3 +5,10 @@
   background-color: orange;
   font-family: "Roboto", serif;
 }
+
+.github {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
