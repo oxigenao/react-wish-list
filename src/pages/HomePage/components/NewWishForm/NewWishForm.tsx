@@ -11,6 +11,7 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
       <input
         className="input-form"
         placeholder="Add new wish!"
+        value={inputValue}
         onChange={(evt) => {
           setInputValue(evt.target.value);
         }}
@@ -24,7 +25,9 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
                     return previous.id > current.id ? previous : current;
                   }).id + 1
                 : 0,
-            name: IsStringUrl(inputValue) ? "ENLACE" : inputValue,
+            name: IsStringUrl(inputValue)
+              ? inputValue.substr(0, 20) + "..."
+              : inputValue,
             ...(IsStringUrl(inputValue) && { url: inputValue }),
           };
 
@@ -33,6 +36,7 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
             ...props.actualWishList,
             newElement,
           ] as Wish[]);
+          setInputValue("");
         }}
       >
         <span role="img" aria-label="web">

@@ -28,7 +28,7 @@ function WishCard(props: {
           });
         }}
       ></input>
-      <div className="picture"></div>
+      {/* <div className="picture"></div> */}
       <div className="content">
         <p className="title">
           <b>{wishElement.name}</b>
