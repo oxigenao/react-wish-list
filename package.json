@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ionic/core": "^5.1.0",
+    "@ionic/react": "^5.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -15,6 +17,9 @@
     "add": "^2.0.6",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
+    "firebase": "^7.14.2",
+    "import": "0.0.6",
+    "ionicons": "^5.0.1",
     "node-sass": "^4.14.0",
     "path": "^0.12.7",
     "react": "^16.13.1",

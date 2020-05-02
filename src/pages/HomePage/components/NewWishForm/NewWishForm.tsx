@@ -3,6 +3,7 @@ import { Wish } from "../../../../models/wish";
 import WishApi from "../../../../services/wishApi";
 import IsStringUrl from "../../../../utils/utils";
 import "./NewWishForm.scss";
+import { IonButton } from "@ionic/react";
 function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
   const [inputValue, setInputValue] = useState("");
 
@@ -16,7 +17,8 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
           setInputValue(evt.target.value);
         }}
       ></input>
-      <button
+      <IonButton
+        className="sendButton"
         onClick={() => {
           let newElement = {
             id:
@@ -32,17 +34,14 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
           };
 
           props.wishListSetter([...props.actualWishList, newElement]);
-          WishApi.updateWishList([
-            ...props.actualWishList,
-            newElement,
-          ] as Wish[]);
+          WishApi.addWish(newElement).then();
           setInputValue("");
         }}
       >
         <span role="img" aria-label="web">
           💾
         </span>
-      </button>
+      </IonButton>
     </div>
   );
 }

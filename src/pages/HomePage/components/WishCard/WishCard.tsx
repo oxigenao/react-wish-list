@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./WishCard.scss";
 import { Wish } from "../../../../models/wish";
+import { IonCard } from "@ionic/react";
 
 function WishCard(props: {
   wishElement: Wish;
@@ -12,7 +13,9 @@ function WishCard(props: {
   );
 
   return (
-    <div className={"wish-card " + (wishElement.done && "wish-card-disabled")}>
+    <IonCard
+      className={"wish-card " + (wishElement.done && "wish-card-disabled")}
+    >
       <input
         className="checkbox-button"
         type="checkbox"
@@ -59,7 +62,7 @@ function WishCard(props: {
           🗑️
         </span>
       </button>
-    </div>
+    </IonCard>
   );
 }
 

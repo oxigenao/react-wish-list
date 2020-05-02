@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Wish } from "../../models/wish";
 import WishApi from "../../services/wishApi";
 import WishCard from "./components/WishCard/WishCard";
 import NewWishForm from "./components/NewWishForm/NewWishForm";
-function HomePage() {
+import { Context } from "../../hooks/userData/userDateStore";
+function HomePage(props: any) {
   const [wishList, setWishList] = useState([] as Wish[]);
+  const [userState] = useContext(Context);
+
   const onWishDoneChange = (item: Wish) => {
     let auxWishList = [...wishList];
     auxWishList.map((w) => {
@@ -26,6 +29,8 @@ function HomePage() {
   };
 
   useEffect(() => {
+    console.log("ESTADO", userState);
+    if (!userState.accessToken || !userState.uid) props.history.push("/login");
     WishApi.getWishes().then((res) => {
       setWishList(res);
     });
@@ -33,8 +38,6 @@ function HomePage() {
 
   return (
     <div className="home-container">
-      <div className="add-button"></div>
-
       <NewWishForm
         wishListSetter={setWishList}
         actualWishList={wishList}

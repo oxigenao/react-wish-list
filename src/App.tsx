@@ -1,29 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.scss";
-import { BrowserRouter as Router } from "react-router-dom";
-
-import AppRouter from "./App.router";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/navBar/navBar";
+import HomePage from "./pages/HomePage/HomePage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import UserDataStore from "./hooks/userData/userDateStore";
+import GitHubLink from "./components/gitHubLink/gitHubLink";
 
 function App() {
+  useEffect(() => {
+    // firebase.initializeApp()
+  });
+
   return (
     <div className="App">
       <Router>
         <div>
           <NavBar></NavBar>
-          <AppRouter></AppRouter>
+          <Switch>
+            <UserDataStore>
+              <Route path="/" exact component={HomePage}></Route>
+              <Route path="/login" exact component={LoginPage}></Route>
+            </UserDataStore>
+          </Switch>
         </div>
       </Router>
-      <div className="github">
-        <a href="https://github.com/oxigenao/react-wish-list">
-          <img
-            width="30px"
-            height="30px"
-            alt="logo-github"
-            src="https://cdn.worldvectorlogo.com/logos/github-icon.svg"
-          ></img>
-        </a>
-      </div>
+      <GitHubLink></GitHubLink>
     </div>
   );
 }
