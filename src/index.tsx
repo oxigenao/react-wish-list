@@ -7,7 +7,6 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 
 import { applyPolyfills, defineCustomElements } from "@ionic/core/loader";
-
 var firebaseConfig = {
   apiKey: process.env.REACT_APP_google_api_client,
   authDomain: "wish-list-196f2.firebaseapp.com",
@@ -17,7 +16,8 @@ var firebaseConfig = {
   appID: "wish-list-196f2",
 };
 firebase.initializeApp(firebaseConfig);
-export const db = firebase.firestore();
+const db = firebase.firestore();
+export { db };
 
 ReactDOM.render(
   <React.StrictMode>

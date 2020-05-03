@@ -1,5 +1,5 @@
 export interface Wish {
-  id: number;
+  id: string;
   name: string;
   url?: string;
   urlImage?: string;

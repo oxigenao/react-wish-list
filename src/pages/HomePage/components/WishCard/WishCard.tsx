@@ -13,9 +13,7 @@ function WishCard(props: {
   );
 
   return (
-    <IonCard
-      className={"wish-card " + (wishElement.done && "wish-card-disabled")}
-    >
+    <IonCard class={"wish-card " + (wishElement.done && "wish-card-disabled")}>
       <input
         className="checkbox-button"
         type="checkbox"

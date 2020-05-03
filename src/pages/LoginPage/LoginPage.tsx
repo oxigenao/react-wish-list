@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../../hooks/userData/userDateStore";
 import { UserStateAction } from "../../hooks/userData/userDataReducer";
 import * as firebase from "firebase/app";
@@ -22,19 +22,30 @@ function LoginPage(props: any) {
 
   const logInWithGoogle = () => {
     let provider = new firebase.auth.GoogleAuthProvider();
+
     firebase
       .auth()
-      .signInWithPopup(provider)
-      .then(function (result: any) {
-        console.log("logInWithGoogle -> result", result);
-        updateLoginParameter(
-          result.user.displayName,
-          result.credential.accessToken,
-          result.user.uid
-        );
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(function () {
+        return firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then(function (result: any) {
+            console.log("logInWithGoogle -> result", result);
+            updateLoginParameter(
+              result.user.displayName,
+              result.credential.accessToken,
+              result.user.uid
+            );
+          })
+          .catch(function (error) {
+            console.log("logInWithGoogle -> error", error);
+          });
       })
       .catch(function (error) {
-        console.log("logInWithGoogle -> error", error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
       });
   };
 

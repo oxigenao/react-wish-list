@@ -8,11 +8,11 @@ const navStyle = {
 function NavBar() {
   return (
     <nav style={navStyle}>
-      <a style={{ textDecoration: "none" }} href="/">
+      {/* <a style={{ textDecoration: "none" }} href="/">
         <span role="img" aria-label="wish">
           🤤
         </span>
-      </a>
+      </a> */}
     </nav>
   );
 }

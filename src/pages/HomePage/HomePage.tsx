@@ -8,28 +8,27 @@ function HomePage(props: any) {
   const [wishList, setWishList] = useState([] as Wish[]);
   const [userState] = useContext(Context);
 
-  const onWishDoneChange = (item: Wish) => {
+  const onWishDoneChange = async (item: Wish) => {
     let auxWishList = [...wishList];
     auxWishList.map((w) => {
       if (w.id === item.id) w.done = item.done;
       return w;
     });
+    await WishApi.updateWish(item);
     setWishList(auxWishList);
-    WishApi.updateWishList(auxWishList);
   };
 
-  const onDeleteWish = (itemId: number) => {
+  const onDeleteWish = async (itemId: string) => {
     let auxWishList = [...wishList];
     auxWishList.splice(
       auxWishList.findIndex((w) => w.id === itemId),
       1
     );
-    setWishList(auxWishList);
-    WishApi.updateWishList(auxWishList);
+    WishApi.deleteWish(itemId);
+    setWishList(await WishApi.getWishes());
   };
 
   useEffect(() => {
-    console.log("ESTADO", userState);
     if (!userState.accessToken || !userState.uid) props.history.push("/login");
     WishApi.getWishes().then((res) => {
       setWishList(res);

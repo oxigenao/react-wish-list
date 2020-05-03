@@ -1,9 +1,7 @@
 import { Wish } from "../models/wish";
-import * as firebase from "firebase/app";
 import { db } from "..";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
-
 const COLLECTION_DB = "wishes";
 
 const WishApi = {
@@ -13,25 +11,24 @@ const WishApi = {
         map((querySnap) => {
           let returnValue: Wish[] = [];
           querySnap.forEach((res: any) => {
-            returnValue.push(res.data());
+            returnValue.push({ ...res.data(), id: res.id });
           });
           return returnValue;
         })
       )
       .toPromise();
   },
-  updateWishList: (wish: Wish[]): Promise<any> => {
-    return new Promise((resolve) => {
-      window.localStorage.setItem("wish-list", JSON.stringify(wish));
-      resolve(true);
-    });
+  updateWish: (wish: Wish): Promise<any> => {
+    let auxData = { ...wish };
+    delete auxData.id;
+    return db.collection(COLLECTION_DB).doc(wish.id).set(auxData);
   },
   addWish: (wish: Wish): Promise<any> => {
     return db.collection(COLLECTION_DB).add(wish);
   },
-  // deleteWish: (wishId: number): Promise<any> => {
-  //   return db.collection(COLLECTION_DB).delete(wish);
-  // },
+  deleteWish: (wishId: string): Promise<any> => {
+    return db.collection(COLLECTION_DB).doc(wishId).delete();
+  },
 };
 
 export default WishApi;
