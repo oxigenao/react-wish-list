@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Wish } from "../../../../models/wish";
 import WishApi from "../../../../services/wishApi";
 import IsStringUrl from "../../../../utils/utils";
 import "./NewWishForm.scss";
 import { IonButton, IonInput } from "@ionic/react";
+import { Context } from "../../../../hooks/userData/userDateStore";
 function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
   const [inputValue, setInputValue] = useState("");
+  const [userState] = useContext(Context);
 
   return (
     <div className="new-wish-form-container">
@@ -26,9 +28,10 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
               : inputValue,
             ...(IsStringUrl(inputValue) && { url: inputValue }),
             done: false,
+            owner: [userState.uid],
           };
 
-          WishApi.addWish(newElement as Wish).then();
+          WishApi.addWish(newElement as any).then();
           props.wishListSetter(await WishApi.getWishes());
           setInputValue("");
         }}
