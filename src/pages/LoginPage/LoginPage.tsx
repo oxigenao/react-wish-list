@@ -55,6 +55,7 @@ function LoginPage(props: any) {
         padding: "15px",
         display: "block",
         margin: "auto",
+        maxWidth: "350px",
       }}
     >
       <IonCardHeader>Welcome to Wish/DO List</IonCardHeader>
