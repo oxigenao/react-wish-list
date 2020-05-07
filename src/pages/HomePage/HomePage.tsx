@@ -4,6 +4,9 @@ import WishApi from "../../services/wishApi";
 import WishCard from "./components/WishCard/WishCard";
 import NewWishForm from "./components/NewWishForm/NewWishForm";
 import { Context } from "../../hooks/userData/userDateStore";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "./HomePage.scss";
 function HomePage(props: any) {
   const [wishList, setWishList] = useState([] as Wish[]);
   const [userState] = useContext(Context);
@@ -29,7 +32,13 @@ function HomePage(props: any) {
   };
 
   useEffect(() => {
-    if (!userState.accessToken || !userState.uid) props.history.push("/login");
+    if (
+      !userState.accessToken ||
+      !userState.uid
+      // !firebase.auth().currentUser
+    )
+      props.history.push("/login");
+    console.log();
     WishApi.getWishes().then((res) => {
       setWishList(res);
     });
@@ -43,6 +52,7 @@ function HomePage(props: any) {
       ></NewWishForm>
 
       <div>
+        <p className="main-title">Mi WishDo List</p>
         {wishList
           .sort((a: Wish, b: Wish) => {
             if (a.done) return 1;

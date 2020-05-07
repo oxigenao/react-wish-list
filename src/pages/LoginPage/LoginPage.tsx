@@ -3,7 +3,7 @@ import { Context } from "../../hooks/userData/userDateStore";
 import { UserStateAction } from "../../hooks/userData/userDataReducer";
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import { IonButton, IonIcon } from "@ionic/react";
+import { IonButton, IonIcon, IonCard, IonCardHeader } from "@ionic/react";
 import { logoGoogle } from "ionicons/icons";
 
 function LoginPage(props: any) {
@@ -50,13 +50,19 @@ function LoginPage(props: any) {
   };
 
   return (
-    <div>
-      <h2>Login Page</h2>
+    <IonCard
+      style={{
+        padding: "15px",
+        display: "block",
+        margin: "auto",
+      }}
+    >
+      <IonCardHeader>Welcome to Wish/DO List</IonCardHeader>
       <IonButton fill="outline" onClick={logInWithGoogle}>
         <IonIcon slot="start" icon={logoGoogle} />
         LogIn with google
       </IonButton>
-    </div>
+    </IonCard>
   );
 }
 export default LoginPage;

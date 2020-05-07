@@ -3,13 +3,12 @@
   margin: auto;
   width: 250px;
   justify-content: center;
+
   .sendButton {
     display: inline-block;
-    margin-bottom: 10px;
-    --background: white;
+    float: right;
     width: 40px;
     height: 39px;
-    margin-top: -1px;
     span {
       position: absolute;
       left: 50%;
@@ -21,15 +20,10 @@
   }
 
   .input-form {
-    display: inline-block;
-    padding: 10px;
-    border: none;
     width: 200px;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px,
-      rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
-    border-radius: 4px;
     outline: none;
-    margin-bottom: 10px;
-    --background: white;
+    position: absolute;
+    left: 0px;
+    top: 6px;
   }
 }

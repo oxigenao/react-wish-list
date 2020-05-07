@@ -2,8 +2,22 @@
   text-align: center;
   padding: 15px;
   height: 100vh;
-  background-color: orange;
+  background-color: #fafafa;
   font-family: "Roboto", serif;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#fe7e5e+0,feb27a+99 */
+  background: #fe7e5e; /* Old browsers */
+  background: -moz-linear-gradient(top, #fe7e5e 0%, #feb27a 99%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    top,
+    #fe7e5e 0%,
+    #feb27a 99%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #fe7e5e 0%,
+    #feb27a 99%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe7e5e', endColorstr='#feb27a',GradientType=0 ); /* IE6-9 */
 }
 
 .github {

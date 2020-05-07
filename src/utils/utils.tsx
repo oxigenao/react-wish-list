@@ -8,5 +8,6 @@ export default function IsStringUrl(str: string) {
       "(\\#[-a-z\\d_]*)?$",
     "i"
   ); // fragment locator
+  console.log("ISM URL", !!pattern.test(str));
   return !!pattern.test(str);
 }

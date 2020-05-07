@@ -3,14 +3,14 @@ import { Wish } from "../../../../models/wish";
 import WishApi from "../../../../services/wishApi";
 import IsStringUrl from "../../../../utils/utils";
 import "./NewWishForm.scss";
-import { IonButton, IonInput } from "@ionic/react";
+import { IonButton, IonInput, IonCard } from "@ionic/react";
 import { Context } from "../../../../hooks/userData/userDateStore";
 function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
   const [inputValue, setInputValue] = useState("");
   const [userState] = useContext(Context);
 
   return (
-    <div className="new-wish-form-container">
+    <IonCard className="new-wish-form-container">
       <IonInput
         class="input-form"
         placeholder="Add new wish!"
@@ -21,6 +21,7 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
       ></IonInput>
       <IonButton
         class="sendButton"
+        fill="clear"
         onClick={async () => {
           let newElement = {
             name: IsStringUrl(inputValue)
@@ -40,7 +41,7 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
           💾
         </span>
       </IonButton>
-    </div>
+    </IonCard>
   );
 }
 
