@@ -10,7 +10,7 @@ function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
 
   useEffect(() => {
     setWishes(props.wishList.wishes);
-  });
+  }, [props.wishList]);
 
   const onWishDoneChange = async (item: Wish, timeStamp: number) => {
     let auxWishes = [...wishes];
