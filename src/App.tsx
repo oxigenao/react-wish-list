@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/navBar/navBar";
@@ -8,10 +8,6 @@ import UserDataStore from "./hooks/userData/userDateStore";
 import GitHubLink from "./components/gitHubLink/gitHubLink";
 
 function App() {
-  useEffect(() => {
-    // firebase.initializeApp()
-  });
-
   return (
     <div className="App">
       <Router>

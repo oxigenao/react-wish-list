@@ -1,47 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import "./WishCard.scss";
-import { Wish } from "../../../../models/wish";
 import { IonCard } from "@ionic/react";
+import { Wish } from "../../../../models/wish";
 
 function WishCard(props: {
+  timeStamp: number;
   wishElement: Wish;
   onWishDoneChange: any;
   onDeleteWish: any;
 }) {
-  const [wishElement, setWishElement] = useState(
-    props.wishElement || ({} as Wish)
-  );
-
   return (
-    <IonCard class={"wish-card " + (wishElement.done && "wish-card-disabled")}>
+    <IonCard
+      class={"wish-card " + (props.wishElement.done && "wish-card-disabled")}
+    >
       <input
         className="checkbox-button"
         type="checkbox"
-        checked={wishElement.done}
+        checked={props.wishElement.done}
         onChange={(evt) => {
-          setWishElement({
-            ...wishElement,
-            done: evt.target.checked,
-          });
-          props.onWishDoneChange({
-            ...wishElement,
-            done: evt.target.checked,
-          });
+          props.onWishDoneChange(
+            {
+              ...props.wishElement,
+              done: evt.target.checked,
+            },
+            props.timeStamp
+          );
         }}
       ></input>
       {/* <div className="picture"></div> */}
       <div className="content">
         <p className="title">
-          <b>{wishElement.name}</b>
+          <b>{props.wishElement.name}</b>
         </p>
         <br></br>
         <span>
-          {wishElement.url && (
+          {props.wishElement.url && (
             <a
               className="action-button"
               target="_blank"
               rel="noopener noreferrer"
-              href={wishElement.url}
+              href={props.wishElement.url}
             >
               <span role="img" aria-label="web">
                 🌐
@@ -53,7 +51,7 @@ function WishCard(props: {
       <button
         className="action-button"
         onClick={() => {
-          props.onDeleteWish(wishElement.id);
+          props.onDeleteWish(props.timeStamp);
         }}
       >
         <span role="img" aria-label="delete">

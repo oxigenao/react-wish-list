@@ -1,76 +1,96 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Wish } from "../../models/wish";
+import { Wish, WishList } from "../../models/wish";
 import WishApi from "../../services/wishApi";
-import WishCard from "./components/WishCard/WishCard";
-import NewWishForm from "./components/NewWishForm/NewWishForm";
-import { Context } from "../../hooks/userData/userDateStore";
-import * as firebase from "firebase/app";
-import "firebase/auth";
+import { UserStateContext } from "../../hooks/userData/userDateStore";
 import "./HomePage.scss";
+import "firebase/auth";
+import { IonSelect, IonSelectOption, IonSpinner, IonCard } from "@ionic/react";
+import WishListViwer from "./components/WishListViwer/WishListViwer";
+import { list } from "ionicons/icons";
+
 function HomePage(props: any) {
-  const [wishList, setWishList] = useState([] as Wish[]);
-  const [userState] = useContext(Context);
+  const [wishLists, setWishLists] = useState([] as WishList[]);
+  const [selectedList, setSelectedList] = useState<number | undefined>(
+    undefined
+  );
+  const [userState] = useContext(UserStateContext);
+  const [loadingWishes, setLoadingwishes] = useState(false);
 
-  const onWishDoneChange = async (item: Wish) => {
-    let auxWishList = [...wishList];
-    auxWishList.map((w) => {
-      if (w.id === item.id) w.done = item.done;
-      return w;
-    });
-    await WishApi.updateWish(item);
-    setWishList(auxWishList);
-  };
-
-  const onDeleteWish = async (itemId: string) => {
-    let auxWishList = [...wishList];
-    auxWishList.splice(
-      auxWishList.findIndex((w) => w.id === itemId),
-      1
-    );
-    WishApi.deleteWish(itemId);
-    setWishList(await WishApi.getWishes());
+  const initList = function () {
+    return {
+      name: "My wishList",
+      owner: [userState.uid],
+      wishes: [],
+    } as WishList;
   };
 
   useEffect(() => {
-    if (
-      !userState.accessToken ||
-      !userState.uid
-      // !firebase.auth().currentUser
-    )
+    if (!userState.uid) {
       props.history.push("/login");
-    console.log();
-    WishApi.getWishes().then((res) => {
-      setWishList(res);
-    });
+    }
+    setLoadingwishes(true);
+
+    WishApi.getWisheLists()
+      .then((res) => {
+        if (!res || res.length == 0) {
+          WishApi.addWishList(initList());
+          setWishLists([res]);
+        } else {
+          setWishLists(res);
+        }
+        setSelectedList(0);
+        setLoadingwishes(false);
+      })
+      .catch(() => {
+        setLoadingwishes(false);
+      });
   }, []);
+
+  const onWishListChange = function (newWishes: Wish[], listId: string) {
+    let auxWishesList = [...wishLists];
+    auxWishesList[
+      auxWishesList.findIndex((r) => r.id == listId)
+    ].wishes = newWishes;
+    console.table(auxWishesList);
+    setWishLists(auxWishesList);
+  };
 
   return (
     <div className="home-container">
-      <NewWishForm
-        wishListSetter={setWishList}
-        actualWishList={wishList}
-      ></NewWishForm>
-
-      <div>
-        <p className="main-title">Mi WishDo List</p>
-        {wishList
-          .sort((a: Wish, b: Wish) => {
-            if (a.done) return 1;
-            else if (b.done) return -1;
-            else if (a.id > b.id) return -1;
-            else return 1;
-          })
-          .map((item: Wish) => {
-            return (
-              <WishCard
-                key={item.id}
-                wishElement={item}
-                onWishDoneChange={onWishDoneChange}
-                onDeleteWish={onDeleteWish}
-              ></WishCard>
-            );
-          })}
-      </div>
+      {selectedList != undefined && !loadingWishes && (
+        <div style={{ marginTop: "10px" }}>
+          <IonCard
+            style={{
+              width: "100%",
+              maxWidth: "320px",
+              marginLeft: "14px",
+            }}
+          >
+            <IonSelect
+              style={{ width: "290px" }}
+              placeholder="Selecciona una lista"
+              value={selectedList}
+              onIonChange={(ev) => {
+                setSelectedList(ev.detail.value);
+              }}
+            >
+              {wishLists.map((wL, index) => {
+                return (
+                  <IonSelectOption value={index}>{wL.name}</IonSelectOption>
+                );
+              })}
+            </IonSelect>
+          </IonCard>
+          {props.loading ? (
+            <IonSpinner name="crescent" />
+          ) : (
+            <WishListViwer
+              wishList={wishLists[selectedList]}
+              onWishListChange={onWishListChange}
+            ></WishListViwer>
+          )}
+        </div>
+      )}
     </div>
   );
 }

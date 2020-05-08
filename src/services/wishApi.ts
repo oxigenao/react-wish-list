@@ -1,12 +1,12 @@
-import { Wish } from "../models/wish";
+import { Wish, WishList } from "../models/wish";
 import { db } from "..";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { PERSIST_USERDATA_TAG } from "../hooks/userData/userDataReducer";
-const COLLECTION_DB = "wishes";
+const COLLECTION_DB = "WishLists";
 
 const WishApi = {
-  getWishes: (): Promise<any> => {
+  getWisheLists: (): Promise<any> => {
     return from(
       db
         .collection(COLLECTION_DB)
@@ -24,16 +24,25 @@ const WishApi = {
       )
       .toPromise();
   },
-  updateWish: (wish: Wish): Promise<any> => {
-    let auxData = { ...wish };
+  getWisheListById: (id: string): Promise<any> => {
+    return from(db.collection(COLLECTION_DB).doc(id).get())
+      .pipe(
+        map((querySnap) => {
+          return querySnap.data();
+        })
+      )
+      .toPromise();
+  },
+  addWishList: (wishList: WishList): Promise<any> => {
+    return db.collection(COLLECTION_DB).add(wishList);
+  },
+  updateWishList: (wishList: WishList): Promise<any> => {
+    let auxData = { ...wishList };
     delete auxData.id;
-    return db.collection(COLLECTION_DB).doc(wish.id).set(auxData);
+    return db.collection(COLLECTION_DB).doc(wishList.id).set(auxData);
   },
-  addWish: (wish: Wish): Promise<any> => {
-    return db.collection(COLLECTION_DB).add(wish);
-  },
-  deleteWish: (wishId: string): Promise<any> => {
-    return db.collection(COLLECTION_DB).doc(wishId).delete();
+  deleteWishList: (wishListId: string): Promise<any> => {
+    return db.collection(COLLECTION_DB).doc(wishListId).delete();
   },
 };
 

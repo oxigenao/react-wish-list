@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Context } from "../../hooks/userData/userDateStore";
+import { UserStateContext } from "../../hooks/userData/userDateStore";
 import { UserStateAction } from "../../hooks/userData/userDataReducer";
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -7,15 +7,12 @@ import { IonButton, IonIcon, IonCard, IonCardHeader } from "@ionic/react";
 import { logoGoogle } from "ionicons/icons";
 
 function LoginPage(props: any) {
-  const [state, dispatch] = useContext(Context);
-  const updateLoginParameter = function (
-    username: string,
-    token: string,
-    uid: string
-  ) {
+  const [state, dispatch] = useContext(UserStateContext);
+
+  const updateLoginParameter = function (username: string, uid: string) {
     dispatch({
       type: UserStateAction.MergeState,
-      payload: { name: username, accessToken: token, uid: uid },
+      payload: { name: username, uid: uid },
     });
     props.history.push("/");
   };
@@ -25,27 +22,17 @@ function LoginPage(props: any) {
 
     firebase
       .auth()
-      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       .then(function () {
         return firebase
           .auth()
           .signInWithPopup(provider)
           .then(function (result: any) {
-            console.log("logInWithGoogle -> result", result);
-            updateLoginParameter(
-              result.user.displayName,
-              result.credential.accessToken,
-              result.user.uid
-            );
+            updateLoginParameter(result.user.displayName, result.user.uid);
           })
           .catch(function (error) {
             console.log("logInWithGoogle -> error", error);
           });
-      })
-      .catch(function (error) {
-        // Handle Errors here.
-        // var errorCode = error.code;
-        // var errorMessage = error.message;
       });
   };
 

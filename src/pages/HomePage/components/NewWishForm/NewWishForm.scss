@@ -1,7 +1,8 @@
 .new-wish-form-container {
   display: block;
   margin: auto;
-  width: 250px;
+  width: 100%;
+  max-width: 320px;
   justify-content: center;
 
   .sendButton {

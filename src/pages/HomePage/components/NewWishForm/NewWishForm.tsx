@@ -1,17 +1,33 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Wish } from "../../../../models/wish";
-import WishApi from "../../../../services/wishApi";
 import IsStringUrl from "../../../../utils/utils";
 import "./NewWishForm.scss";
 import { IonButton, IonInput, IonCard } from "@ionic/react";
-import { Context } from "../../../../hooks/userData/userDateStore";
-function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
+function NewWishForm(props: { onCreateWish: any }) {
   const [inputValue, setInputValue] = useState("");
-  const [userState] = useContext(Context);
+
+  const createNewWish = async function () {
+    if (!inputValue || inputValue.length == 0) return;
+    let newElement: Wish = {
+      name: IsStringUrl(inputValue)
+        ? inputValue.substr(0, 20) + "..."
+        : inputValue,
+      ...(IsStringUrl(inputValue) && { url: inputValue }),
+      done: false,
+      timeStamp: new Date().getTime(),
+    };
+    props.onCreateWish(newElement);
+    setInputValue("");
+  };
 
   return (
     <IonCard className="new-wish-form-container">
       <IonInput
+        onKeyPress={(ev) => {
+          if (ev.charCode == 13) {
+            createNewWish();
+          }
+        }}
         class="input-form"
         placeholder="Add new wish!"
         value={inputValue}
@@ -19,24 +35,7 @@ function NewWishForm(props: { wishListSetter: any; actualWishList: Wish[] }) {
           setInputValue(evt.detail.value);
         }}
       ></IonInput>
-      <IonButton
-        class="sendButton"
-        fill="clear"
-        onClick={async () => {
-          let newElement = {
-            name: IsStringUrl(inputValue)
-              ? inputValue.substr(0, 20) + "..."
-              : inputValue,
-            ...(IsStringUrl(inputValue) && { url: inputValue }),
-            done: false,
-            owner: [userState.uid],
-          };
-
-          WishApi.addWish(newElement as any).then();
-          props.wishListSetter(await WishApi.getWishes());
-          setInputValue("");
-        }}
-      >
+      <IonButton class="sendButton" fill="clear" onClick={createNewWish}>
         <span role="img" aria-label="web">
           💾
         </span>

@@ -17,9 +17,11 @@ const getInitState = () => {
 const UserDataStore = ({ children }: any) => {
   const [state, dispatch] = useReducer(Reducer, getInitState());
   return (
-    <Context.Provider value={[state, dispatch]}>{children}</Context.Provider>
+    <UserStateContext.Provider value={[state, dispatch]}>
+      {children}
+    </UserStateContext.Provider>
   );
 };
 
-export const Context = createContext(initialUserDataState);
+export const UserStateContext = createContext(initialUserDataState);
 export default UserDataStore;
