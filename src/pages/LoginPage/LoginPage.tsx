@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserStateContext } from "../../hooks/userData/userDateStore";
 import { UserStateAction } from "../../hooks/userData/userDataReducer";
 import * as firebase from "firebase/app";

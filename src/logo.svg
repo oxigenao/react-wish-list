@@ -1,10 +1,8 @@
-<svg width="421" height="435" viewBox="0 0 421 435" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="421" height="323" viewBox="0 0 421 323" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="421" height="99" rx="8" fill="#FE7E5E"/>
-<rect y="336" width="421" height="99" rx="8" fill="#E5E5E5"/>
 <rect y="224" width="421" height="99" rx="8" fill="#E5E5E5"/>
 <rect y="112" width="421" height="99" rx="8" fill="#FE7E5E"/>
 <circle cx="43" cy="49" r="18" fill="white"/>
 <circle cx="43" cy="161" r="18" fill="white"/>
 <circle cx="43" cy="273" r="18" fill="white"/>
-<circle cx="43" cy="386" r="18" fill="white"/>
 </svg>

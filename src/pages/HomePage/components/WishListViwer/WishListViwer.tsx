@@ -12,10 +12,14 @@ function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
     setWishes(props.wishList.wishes);
   }, [props.wishList]);
 
-  const onWishDoneChange = async (item: Wish, timeStamp: number) => {
+  const onWishChange = async (item: Wish, timeStamp: number) => {
+    console.log("onWishChange -> item", item);
     let auxWishes = [...wishes];
     auxWishes.map((w, i) => {
-      if (w.timeStamp == timeStamp) w.done = item.done;
+      if (w.timeStamp == timeStamp) {
+        w.done = item.done;
+        w.name = item.name;
+      }
       return w;
     });
     updateWishes(auxWishes);
@@ -62,12 +66,12 @@ function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
                 key={index}
                 timeStamp={item.timeStamp}
                 wishElement={item}
-                onWishDoneChange={onWishDoneChange}
+                onWishChange={onWishChange}
                 onDeleteWish={onDeleteWish}
               ></WishCard>
             );
           })}
-      {wishes.length == 0 && (
+      {wishes && wishes.length == 0 && (
         <img
           className="empty-list-img"
           alt="empty-wish"
