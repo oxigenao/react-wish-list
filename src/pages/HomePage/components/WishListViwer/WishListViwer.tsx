@@ -6,7 +6,11 @@ import WishApi from "../../../../services/wishApi";
 import NewWishForm from "../NewWishForm/NewWishForm";
 
 function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
-  const [wishes, setWishes] = useState<Wish[]>(props.wishList.wishes);
+  const [wishes, setWishes] = useState<Wish[]>([]);
+
+  useEffect(() => {
+    setWishes(props.wishList.wishes);
+  });
 
   const onWishDoneChange = async (item: Wish, timeStamp: number) => {
     let auxWishes = [...wishes];

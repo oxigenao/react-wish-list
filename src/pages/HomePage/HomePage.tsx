@@ -6,7 +6,6 @@ import "./HomePage.scss";
 import "firebase/auth";
 import { IonSelect, IonSelectOption, IonSpinner, IonCard } from "@ionic/react";
 import WishListViwer from "./components/WishListViwer/WishListViwer";
-import { list } from "ionicons/icons";
 
 function HomePage(props: any) {
   const [wishLists, setWishLists] = useState([] as WishList[]);
@@ -55,6 +54,10 @@ function HomePage(props: any) {
     setWishLists(auxWishesList);
   };
 
+  const onListSelectedChange = function (ev: any) {
+    setSelectedList(ev.detail.value);
+  };
+
   return (
     <div className="home-container">
       {selectedList != undefined && !loadingWishes && (
@@ -70,13 +73,13 @@ function HomePage(props: any) {
               style={{ width: "290px" }}
               placeholder="Selecciona una lista"
               value={selectedList}
-              onIonChange={(ev) => {
-                setSelectedList(ev.detail.value);
-              }}
+              onIonChange={onListSelectedChange}
             >
               {wishLists.map((wL, index) => {
                 return (
-                  <IonSelectOption value={index}>{wL.name}</IonSelectOption>
+                  <IonSelectOption key={index} value={index}>
+                    {wL.name}
+                  </IonSelectOption>
                 );
               })}
             </IonSelect>
