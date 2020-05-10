@@ -1,77 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { WishList, Wish } from "../../../../models/wish";
 import WishCard from "../WishCard/WishCard";
 import emptyListLogo from "../../../../assets/people.png";
 import WishApi from "../../../../services/wishApi";
 import NewWishForm from "../NewWishForm/NewWishForm";
+import WishListReducer from "./WishListReducer";
 
 function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
-  const [wishes, setWishes] = useState<Wish[]>([]);
+  const [state, dispatch] = useReducer(WishListReducer, []);
 
   useEffect(() => {
-    setWishes(props.wishList.wishes);
+    dispatch({ type: "load", payload: props.wishList.wishes });
   }, [props.wishList]);
 
-  const onWishChange = async (item: Wish, timeStamp: number) => {
-    console.log("onWishChange -> item", item);
-    let auxWishes = [...wishes];
-    auxWishes.map((w, i) => {
-      if (w.timeStamp == timeStamp) {
-        w.done = item.done;
-        w.name = item.name;
-      }
-      return w;
-    });
-    updateWishes(auxWishes);
+  const updateWishes = function () {
+    WishApi.updateWishList({ ...props.wishList, wishes: state });
+  };
+  useEffect(updateWishes, [state]);
+
+  const onWishChange = async (item: Wish) => {
+    dispatch({ type: "update", payload: item });
   };
 
   const onCreateWish = async function (item: Wish) {
-    let newValue = [item, ...wishes];
-    updateWishes(newValue);
+    dispatch({ type: "create", payload: item });
   };
 
   const onDeleteWish = async (timestamp: number) => {
-    let auxWishes = [...wishes];
-    auxWishes.splice(
-      auxWishes.findIndex((w) => w.timeStamp === timestamp),
-      1
-    );
-    updateWishes(auxWishes);
-  };
-
-  const updateWishes = async function (newValue: Wish[]) {
-    WishApi.updateWishList({ ...props.wishList, wishes: newValue });
-    if (props.wishList.id != undefined) {
-      let newWishes = (await WishApi.getWisheListById(props.wishList.id))
-        .wishes;
-      //   props.onWishListChange(newWishes, props.wishList.id);
-      setWishes(newWishes);
-    }
+    dispatch({ type: "delete", payload: timestamp });
   };
 
   return (
     <div>
       <NewWishForm onCreateWish={onCreateWish}></NewWishForm>
-      {wishes &&
-        wishes
+      {state &&
+        state
           .sort((a: Wish, b: Wish) => {
             if (a.done) return 1;
             else if (b.done) return -1;
             else if (a.timeStamp > b.timeStamp) return -1;
             else return 1;
           })
-          .map((item: Wish, index) => {
+          .map((item: Wish, index: any) => {
             return (
               <WishCard
                 key={index}
-                timeStamp={item.timeStamp}
                 wishElement={item}
                 onWishChange={onWishChange}
                 onDeleteWish={onDeleteWish}
               ></WishCard>
             );
           })}
-      {wishes && wishes.length == 0 && (
+      {state && state.length == 0 && (
         <img
           className="empty-list-img"
           alt="empty-wish"

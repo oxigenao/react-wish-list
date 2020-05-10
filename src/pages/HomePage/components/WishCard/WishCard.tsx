@@ -5,7 +5,6 @@ import { Wish } from "../../../../models/wish";
 import { trashBinOutline } from "ionicons/icons";
 
 function WishCard(props: {
-  timeStamp: number;
   wishElement: Wish;
   onWishChange: any;
   onDeleteWish: any;
@@ -21,13 +20,10 @@ function WishCard(props: {
         checked={props.wishElement.done}
         style={{ opacity: editable ? 0.3 : 1 }}
         onChange={(evt) => {
-          props.onWishChange(
-            {
-              ...props.wishElement,
-              done: evt.target.checked,
-            },
-            props.timeStamp
-          );
+          props.onWishChange({
+            ...props.wishElement,
+            done: evt.target.checked,
+          });
         }}
       ></input>
       {/* <div className="picture"></div> */}
@@ -49,13 +45,10 @@ function WishCard(props: {
             <IonInput
               style={{ height: "16px", textAlign: "left" }}
               onIonBlur={(ev: any) => {
-                props.onWishChange(
-                  {
-                    ...props.wishElement,
-                    name: ev.srcElement.value,
-                  },
-                  props.timeStamp
-                );
+                props.onWishChange({
+                  ...props.wishElement,
+                  name: ev.srcElement.value,
+                });
                 setEditable(false);
               }}
               value={props.wishElement.name}
@@ -85,7 +78,7 @@ function WishCard(props: {
         size="small"
         style={{ opacity: editable ? 0.3 : 1 }}
         onClick={() => {
-          props.onDeleteWish(props.timeStamp);
+          props.onDeleteWish(props.wishElement.timeStamp);
         }}
       >
         <IonIcon icon={trashBinOutline} slot="icon-only"></IonIcon>
