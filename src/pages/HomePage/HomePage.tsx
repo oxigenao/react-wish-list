@@ -4,8 +4,21 @@ import WishApi from "../../services/wishApi";
 import { UserStateContext } from "../../hooks/userData/userDateStore";
 import "./HomePage.scss";
 import "firebase/auth";
-import { IonSelect, IonSelectOption, IonSpinner, IonCard } from "@ionic/react";
+import {
+  IonSelect,
+  IonSelectOption,
+  IonSpinner,
+  IonCard,
+  IonIcon,
+  IonButton,
+} from "@ionic/react";
 import WishListViwer from "./components/WishListViwer/WishListViwer";
+import {
+  add,
+  createOutline,
+  closeCircleOutline,
+  trashBinOutline,
+} from "ionicons/icons";
 
 function HomePage(props: any) {
   const [wishLists, setWishLists] = useState([] as WishList[]);
@@ -67,10 +80,11 @@ function HomePage(props: any) {
               width: "100%",
               maxWidth: "320px",
               marginLeft: "14px",
+              display: "flex",
             }}
           >
             <IonSelect
-              style={{ width: "290px" }}
+              style={{ width: "290px", display: "flex", textAlign: "left" }}
               placeholder="Selecciona una lista"
               value={selectedList}
               onIonChange={onListSelectedChange}
@@ -83,15 +97,23 @@ function HomePage(props: any) {
                 );
               })}
             </IonSelect>
+            <IonButton style={{ display: "flex" }} fill="clear">
+              <IonIcon slot="icon-only" icon={add}></IonIcon>
+            </IonButton>
           </IonCard>
-          {props.loading ? (
-            <IonSpinner name="crescent" />
-          ) : (
-            <WishListViwer
-              wishList={wishLists[selectedList]}
-              onWishListChange={onWishListChange}
-            ></WishListViwer>
-          )}
+          <div className="title-content">
+            <h1>{wishLists[selectedList].name}</h1>
+            <IonButton size="small" fill="clear">
+              <IonIcon icon={createOutline} slot="icon-only"></IonIcon>
+            </IonButton>
+            <IonButton size="small" fill="clear">
+              <IonIcon icon={trashBinOutline} slot="icon-only"></IonIcon>
+            </IonButton>
+          </div>
+          <WishListViwer
+            wishList={wishLists[selectedList]}
+            onWishListChange={onWishListChange}
+          ></WishListViwer>
         </div>
       )}
     </div>

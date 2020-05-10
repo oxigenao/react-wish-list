@@ -16,26 +16,6 @@
   }
   .action-button {
     display: flex;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    cursor: pointer;
-    span {
-      font-size: 14px;
-    }
-  }
-
-  a.action-button {
-    text-decoration: none;
-    margin-left: 10px;
-    margin-top: 2px;
-  }
-  .action-button:active {
-    background-color: #f5f5f5;
-  }
-  .action-button:hover {
-    background-color: #f5f5f5;
   }
 
   .content {
@@ -43,6 +23,7 @@
     width: 200px;
     p {
       margin: 5px;
+      text-align: left;
     }
   }
 }

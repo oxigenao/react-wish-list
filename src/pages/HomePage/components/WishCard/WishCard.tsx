@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./WishCard.scss";
-import { IonCard, IonInput } from "@ionic/react";
+import { IonCard, IonInput, IonIcon, IonButton } from "@ionic/react";
 import { Wish } from "../../../../models/wish";
+import { trashBinOutline } from "ionicons/icons";
 
 function WishCard(props: {
   timeStamp: number;
@@ -78,17 +79,17 @@ function WishCard(props: {
           )}
         </span>
       </div>
-      <button
+      <IonButton
         className="action-button"
+        fill="clear"
+        size="small"
         style={{ opacity: editable ? 0.3 : 1 }}
         onClick={() => {
           props.onDeleteWish(props.timeStamp);
         }}
       >
-        <span role="img" aria-label="delete">
-          🗑️
-        </span>
-      </button>
+        <IonIcon icon={trashBinOutline} slot="icon-only"></IonIcon>
+      </IonButton>
     </IonCard>
   );
 }

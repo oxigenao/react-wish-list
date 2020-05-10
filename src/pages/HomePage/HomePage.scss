@@ -19,3 +19,19 @@
   width: 100px;
   max-width: 90vw;
 }
+
+.title-content {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+
+  h1 {
+    text-align: left;
+    padding-left: 15px;
+    display: flex;
+    margin-right: 10px;
+  }
+  ion-button {
+    display: flex;
+  }
+}

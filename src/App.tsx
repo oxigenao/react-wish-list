@@ -12,7 +12,6 @@ function App() {
     <div className="App">
       <Router>
         <div>
-          <NavBar></NavBar>
           <Switch>
             <UserDataStore>
               <Route path="/" exact component={HomePage}></Route>

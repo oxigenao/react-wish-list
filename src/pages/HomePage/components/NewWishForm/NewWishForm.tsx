@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Wish } from "../../../../models/wish";
 import IsStringUrl from "../../../../utils/utils";
 import "./NewWishForm.scss";
-import { IonButton, IonInput, IonCard } from "@ionic/react";
+import { IonButton, IonInput, IonCard, IonIcon } from "@ionic/react";
+import { saveOutline } from "ionicons/icons";
 function NewWishForm(props: { onCreateWish: any }) {
   const [inputValue, setInputValue] = useState("");
 
@@ -35,10 +36,13 @@ function NewWishForm(props: { onCreateWish: any }) {
           setInputValue(evt.detail.value);
         }}
       ></IonInput>
-      <IonButton class="sendButton" fill="clear" onClick={createNewWish}>
-        <span role="img" aria-label="web">
-          💾
-        </span>
+      <IonButton
+        class="sendButton"
+        size="small"
+        fill="clear"
+        onClick={createNewWish}
+      >
+        <IonIcon icon={saveOutline} slot="icon-only"></IonIcon>
       </IonButton>
     </IonCard>
   );
