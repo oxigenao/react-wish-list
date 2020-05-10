@@ -81,7 +81,11 @@ function WishCard(props: {
           props.onDeleteWish(props.wishElement.timeStamp);
         }}
       >
-        <IonIcon icon={trashBinOutline} slot="icon-only"></IonIcon>
+        <IonIcon
+          style={{ fontSize: "16px" }}
+          icon={trashBinOutline}
+          slot="icon-only"
+        ></IonIcon>
       </IonButton>
     </IonCard>
   );
