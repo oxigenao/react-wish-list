@@ -1,6 +1,12 @@
 import React, { useState, useContext } from "react";
 import "./WishCard.scss";
-import { IonCard, IonInput, IonIcon, IonButton } from "@ionic/react";
+import {
+  IonCard,
+  IonInput,
+  IonIcon,
+  IonButton,
+  IonCheckbox,
+} from "@ionic/react";
 import { Wish } from "../../../../models/wish";
 import { trashBinOutline } from "ionicons/icons";
 import { WishListContext } from "../WishListViwer/WishListViwer";
