@@ -1,10 +1,18 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useContext,
+  createContext,
+} from "react";
 import { WishList, Wish } from "../../../../models/wish";
 import WishCard from "../WishCard/WishCard";
 import emptyListLogo from "../../../../assets/people.png";
 import WishApi from "../../../../services/wishApi";
 import NewWishForm from "../NewWishForm/NewWishForm";
 import WishListReducer from "./WishListReducer";
+
+export const WishListContext = createContext({} as any);
 
 function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
   const [state, dispatch] = useReducer(WishListReducer, []);
@@ -18,21 +26,9 @@ function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
   };
   useEffect(updateWishes, [state]);
 
-  const onWishChange = async (item: Wish) => {
-    dispatch({ type: "update", payload: item });
-  };
-
-  const onCreateWish = async function (item: Wish) {
-    dispatch({ type: "create", payload: item });
-  };
-
-  const onDeleteWish = async (timestamp: number) => {
-    dispatch({ type: "delete", payload: timestamp });
-  };
-
   return (
-    <div>
-      <NewWishForm onCreateWish={onCreateWish}></NewWishForm>
+    <WishListContext.Provider value={dispatch}>
+      <NewWishForm></NewWishForm>
       {state &&
         state
           .sort((a: Wish, b: Wish) => {
@@ -42,14 +38,7 @@ function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
             else return 1;
           })
           .map((item: Wish, index: any) => {
-            return (
-              <WishCard
-                key={index}
-                wishElement={item}
-                onWishChange={onWishChange}
-                onDeleteWish={onDeleteWish}
-              ></WishCard>
-            );
+            return <WishCard key={index} wishElement={item}></WishCard>;
           })}
       {state && state.length == 0 && (
         <img
@@ -58,7 +47,7 @@ function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
           src={emptyListLogo}
         ></img>
       )}
-    </div>
+    </WishListContext.Provider>
   );
 }
 

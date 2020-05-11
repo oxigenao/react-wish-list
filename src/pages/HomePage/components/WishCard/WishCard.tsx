@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./WishCard.scss";
 import { IonCard, IonInput, IonIcon, IonButton } from "@ionic/react";
 import { Wish } from "../../../../models/wish";
 import { trashBinOutline } from "ionicons/icons";
+import { WishListContext } from "../WishListViwer/WishListViwer";
 
-function WishCard(props: {
-  wishElement: Wish;
-  onWishChange: any;
-  onDeleteWish: any;
-}) {
+function WishCard(props: { wishElement: Wish }) {
   const [editable, setEditable] = useState(false);
+  const dispatch = useContext(WishListContext);
+
   return (
     <IonCard
       class={"wish-card " + (props.wishElement.done && "wish-card-disabled")}
@@ -20,13 +19,15 @@ function WishCard(props: {
         checked={props.wishElement.done}
         style={{ opacity: editable ? 0.3 : 1 }}
         onChange={(evt) => {
-          props.onWishChange({
-            ...props.wishElement,
-            done: evt.target.checked,
+          dispatch({
+            type: "update",
+            payload: {
+              ...props.wishElement,
+              done: evt.target.checked,
+            },
           });
         }}
       ></input>
-      {/* <div className="picture"></div> */}
       <div className="content">
         {!editable && (
           <div
@@ -45,9 +46,12 @@ function WishCard(props: {
             <IonInput
               style={{ height: "16px", textAlign: "left" }}
               onIonBlur={(ev: any) => {
-                props.onWishChange({
-                  ...props.wishElement,
-                  name: ev.srcElement.value,
+                dispatch({
+                  type: "update",
+                  payload: {
+                    ...props.wishElement,
+                    name: ev.srcElement.value,
+                  },
                 });
                 setEditable(false);
               }}
@@ -78,7 +82,7 @@ function WishCard(props: {
         size="small"
         style={{ opacity: editable ? 0.3 : 1 }}
         onClick={() => {
-          props.onDeleteWish(props.wishElement.timeStamp);
+          dispatch({ type: "delete", payload: props.wishElement.timeStamp });
         }}
       >
         <IonIcon

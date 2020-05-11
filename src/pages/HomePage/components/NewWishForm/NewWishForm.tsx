@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Wish } from "../../../../models/wish";
 import IsStringUrl from "../../../../utils/utils";
 import "./NewWishForm.scss";
 import { IonButton, IonInput, IonCard, IonIcon } from "@ionic/react";
 import { saveOutline } from "ionicons/icons";
-function NewWishForm(props: { onCreateWish: any }) {
+import { WishListContext } from "../WishListViwer/WishListViwer";
+function NewWishForm() {
   const [inputValue, setInputValue] = useState("");
+  const dispatch = useContext(WishListContext);
 
   const createNewWish = async function () {
     if (!inputValue || inputValue.length == 0) return;
@@ -17,7 +19,7 @@ function NewWishForm(props: { onCreateWish: any }) {
       done: false,
       timeStamp: new Date().getTime(),
     };
-    props.onCreateWish(newElement);
+    dispatch({ type: "create", payload: newElement });
     setInputValue("");
   };
 
