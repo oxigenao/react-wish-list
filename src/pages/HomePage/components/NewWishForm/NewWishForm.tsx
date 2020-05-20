@@ -4,10 +4,10 @@ import IsStringUrl from "../../../../utils/utils";
 import "./NewWishForm.scss";
 import { IonButton, IonInput, IonCard, IonIcon } from "@ionic/react";
 import { saveOutline } from "ionicons/icons";
-import { WishListContext } from "../WishListViwer/WishListViwer";
+import { WisherContext } from "../WishListViwer/WishListViwer";
 function NewWishForm() {
   const [inputValue, setInputValue] = useState("");
-  const dispatch = useContext(WishListContext);
+  const dispatch = useContext(WisherContext);
 
   const createNewWish = async function () {
     if (!inputValue || inputValue.length == 0) return;

@@ -1,33 +1,31 @@
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useContext,
-  createContext,
-} from "react";
+import React, { useEffect, useReducer, createContext, useContext } from "react";
 import { WishList, Wish } from "../../../../models/wish";
 import WishCard from "../WishCard/WishCard";
 import emptyListLogo from "../../../../assets/people.png";
 import WishApi from "../../../../services/wishApi";
 import NewWishForm from "../NewWishForm/NewWishForm";
-import WishListReducer from "./WishListReducer";
+import WisherReducer from "./WishesReducer";
+import { WishListContext } from "../../HomePage";
 
-export const WishListContext = createContext({} as any);
+export const WisherContext = createContext({} as any);
 
-function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
-  const [state, dispatch] = useReducer(WishListReducer, []);
+function WishListViwer() {
+  const [wishListState, wishListDispatcher] = useContext(WishListContext);
+  const [state, dispatch] = useReducer(WisherReducer, wishListState.wishes);
 
   useEffect(() => {
-    dispatch({ type: "load", payload: props.wishList.wishes });
-  }, [props.wishList]);
+    wishListDispatcher({
+      type: "update",
+      payload: { ...wishListState, wishes: state },
+    });
+  }, [state]);
 
-  const updateWishes = function () {
-    WishApi.updateWishList({ ...props.wishList, wishes: state });
-  };
-  useEffect(updateWishes, [state]);
+  useEffect(() => {
+    dispatch({ type: "load", payload: wishListState.wishes });
+  }, [wishListState]);
 
   return (
-    <WishListContext.Provider value={dispatch}>
+    <WisherContext.Provider value={dispatch}>
       <NewWishForm></NewWishForm>
       {state &&
         state
@@ -47,7 +45,7 @@ function WishListViwer(props: { wishList: WishList; onWishListChange: any }) {
           src={emptyListLogo}
         ></img>
       )}
-    </WishListContext.Provider>
+    </WisherContext.Provider>
   );
 }
 

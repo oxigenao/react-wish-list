@@ -1,6 +1,6 @@
 import { Wish } from "../../../../models/wish";
 
-const WishListReducer = (
+const WisherReducer = (
   state: Wish[],
   action: { type: "load" | "create" | "delete" | "update"; payload: any }
 ) => {
@@ -25,4 +25,4 @@ const WishListReducer = (
   }
 };
 
-export default WishListReducer;
+export default WisherReducer;

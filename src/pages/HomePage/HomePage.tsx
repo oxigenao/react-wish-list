@@ -1,5 +1,11 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Wish, WishList } from "../../models/wish";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useReducer,
+  createContext,
+} from "react";
+import { WishList } from "../../models/wish";
 import WishApi from "../../services/wishApi";
 import { UserStateContext } from "../../hooks/userData/userDateStore";
 import "./HomePage.scss";
@@ -7,18 +13,16 @@ import "firebase/auth";
 import {
   IonSelect,
   IonSelectOption,
-  IonSpinner,
   IonCard,
   IonIcon,
   IonButton,
+  IonInput,
 } from "@ionic/react";
 import WishListViwer from "./components/WishListViwer/WishListViwer";
-import {
-  add,
-  createOutline,
-  closeCircleOutline,
-  trashBinOutline,
-} from "ionicons/icons";
+import { add, createOutline, trashBinOutline } from "ionicons/icons";
+import WishListReducer from "./WishListsReducer";
+
+export const WishListContext = createContext({} as any);
 
 function HomePage(props: any) {
   const [wishLists, setWishLists] = useState([] as WishList[]);
@@ -26,31 +30,30 @@ function HomePage(props: any) {
     undefined
   );
   const [userState] = useContext(UserStateContext);
+  const [wishListState, wishListDispatcher] = useReducer(
+    WishListReducer,
+    undefined
+  );
   const [loadingWishes, setLoadingwishes] = useState(false);
-
-  const initList = function () {
-    return {
-      name: "My wishList",
-      owner: [userState.uid],
-      wishes: [],
-    } as WishList;
-  };
 
   useEffect(() => {
     if (!userState.uid) {
       props.history.push("/login");
     }
     setLoadingwishes(true);
-
     WishApi.getWisheLists()
-      .then((res) => {
-        if (!res || res.length == 0) {
-          WishApi.addWishList(initList());
-          setWishLists([res]);
+      .then(async (res) => {
+        if (!res || res.length === 0) {
+          WishApi.initWishList(userState.uid);
+          let lists = await WishApi.getWisheLists();
+          setWishLists(lists);
+          wishListDispatcher({ type: "load", payload: lists[0] });
         } else {
           setWishLists(res);
+          wishListDispatcher({ type: "load", payload: res[0] });
         }
         setSelectedList(0);
+
         setLoadingwishes(false);
       })
       .catch(() => {
@@ -58,18 +61,17 @@ function HomePage(props: any) {
       });
   }, []);
 
-  const onWishListChange = function (newWishes: Wish[], listId: string) {
-    let auxWishesList = [...wishLists];
-    auxWishesList[
-      auxWishesList.findIndex((r) => r.id == listId)
-    ].wishes = newWishes;
-    console.table(auxWishesList);
-    setWishLists(auxWishesList);
-  };
-
-  const onListSelectedChange = function (ev: any) {
-    setSelectedList(ev.detail.value);
-  };
+  useEffect(() => {
+    if (wishListState) {
+      WishApi.updateWishList(wishListState);
+      setWishLists(
+        wishLists.map((r) => {
+          if (r.id == wishListState.id) return wishListState;
+          return r;
+        })
+      );
+    }
+  }, [wishListState]);
 
   return (
     <div className="home-container">
@@ -87,7 +89,13 @@ function HomePage(props: any) {
               style={{ width: "290px", display: "flex", textAlign: "left" }}
               placeholder="Selecciona una lista"
               value={selectedList}
-              onIonChange={onListSelectedChange}
+              onIonChange={(ev) => {
+                setSelectedList(ev.detail.value);
+                wishListDispatcher({
+                  type: "load",
+                  payload: wishLists[ev.detail.value],
+                });
+              }}
             >
               {wishLists.map((wL, index) => {
                 return (
@@ -97,23 +105,57 @@ function HomePage(props: any) {
                 );
               })}
             </IonSelect>
-            <IonButton style={{ display: "flex" }} fill="clear">
+            <IonButton
+              style={{ display: "flex" }}
+              fill="clear"
+              onClick={async (ev) => {
+                let name = prompt("Please enter a list name", "My list Name");
+                if (name) {
+                  WishApi.addWishList(userState.uid, name);
+                  let newWL = await WishApi.getWisheLists();
+                  setWishLists(newWL);
+                }
+              }}
+            >
               <IonIcon slot="icon-only" icon={add}></IonIcon>
             </IonButton>
           </IonCard>
+
           <div className="title-content">
-            <h1>{wishLists[selectedList].name}</h1>
-            <IonButton size="small" fill="clear">
-              <IonIcon icon={createOutline} slot="icon-only"></IonIcon>
-            </IonButton>
-            <IonButton size="small" fill="clear">
+            <IonInput
+              onIonBlur={(ev: any) => {
+                wishListDispatcher({
+                  type: "update",
+                  payload: { name: ev.srcElement.value } as WishList,
+                });
+              }}
+              className="title-input"
+              value={wishListState && wishListState.name}
+            ></IonInput>
+
+            {/* <IonButton
+              size="small"
+              fill="clear"
+              onClick={(ev) => {
+                if (
+                  window.confirm(
+                    "Are you sure? You are going to permanently delete your list, for you are the ones you share with"
+                  )
+                ) {
+                  console.log("ELIMINO");
+                }
+              }}
+            >
               <IonIcon icon={trashBinOutline} slot="icon-only"></IonIcon>
-            </IonButton>
+            </IonButton> */}
           </div>
-          <WishListViwer
-            wishList={wishLists[selectedList]}
-            onWishListChange={onWishListChange}
-          ></WishListViwer>
+          {wishListState && (
+            <WishListContext.Provider
+              value={[wishListState, wishListDispatcher]}
+            >
+              <WishListViwer></WishListViwer>
+            </WishListContext.Provider>
+          )}
         </div>
       )}
     </div>

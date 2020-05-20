@@ -33,10 +33,22 @@ const WishApi = {
       )
       .toPromise();
   },
-  addWishList: (wishList: WishList): Promise<any> => {
-    return db.collection(COLLECTION_DB).add(wishList);
+  addWishList: (userId: string, name: string): Promise<any> => {
+    return db.collection(COLLECTION_DB).add({
+      name: name,
+      owner: [userId],
+      wishes: [],
+    } as WishList);
+  },
+  initWishList: (userId: string): Promise<any> => {
+    return db.collection(COLLECTION_DB).add({
+      name: "My wishList",
+      owner: [userId],
+      wishes: [],
+    } as WishList);
   },
   updateWishList: (wishList: WishList): Promise<any> => {
+    console.log("wishList", wishList);
     let auxData = { ...wishList };
     delete auxData.id;
     return db.collection(COLLECTION_DB).doc(wishList.id).set(auxData);

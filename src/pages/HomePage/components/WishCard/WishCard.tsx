@@ -9,11 +9,11 @@ import {
 } from "@ionic/react";
 import { Wish } from "../../../../models/wish";
 import { trashBinOutline } from "ionicons/icons";
-import { WishListContext } from "../WishListViwer/WishListViwer";
+import { WisherContext } from "../WishListViwer/WishListViwer";
 
 function WishCard(props: { wishElement: Wish }) {
   const [editable, setEditable] = useState(false);
-  const dispatch = useContext(WishListContext);
+  const dispatch = useContext(WisherContext);
 
   return (
     <IonCard
