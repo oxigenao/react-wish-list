@@ -77,7 +77,7 @@ function HomePage(props: any) {
     <div className="home-container">
       {selectedList != undefined && !loadingWishes && (
         <div style={{ marginTop: "10px" }}>
-          <IonCard
+          <div
             style={{
               width: "100%",
               maxWidth: "320px",
@@ -119,7 +119,7 @@ function HomePage(props: any) {
             >
               <IonIcon slot="icon-only" icon={add}></IonIcon>
             </IonButton>
-          </IonCard>
+          </div>
 
           <div className="title-content">
             <IonInput

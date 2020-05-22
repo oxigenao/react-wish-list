@@ -27,7 +27,7 @@
 
   .title-input {
     text-align: left;
-    padding-left: 15px;
+    padding-left: 10px !important;
     display: flex;
     margin-right: 10px;
     font-size: 18px;
@@ -37,4 +37,8 @@
   ion-button {
     display: flex;
   }
+}
+
+ion-select {
+  border-bottom: 3px solid black;
 }

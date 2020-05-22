@@ -1,11 +1,24 @@
-import React, { useEffect, useReducer, createContext, useContext } from "react";
-import { WishList, Wish } from "../../../../models/wish";
+import React, {
+  useEffect,
+  useReducer,
+  createContext,
+  useContext,
+  useRef,
+} from "react";
+import { Wish } from "../../../../models/wish";
 import WishCard from "../WishCard/WishCard";
-import emptyListLogo from "../../../../assets/people.png";
-import WishApi from "../../../../services/wishApi";
+
 import NewWishForm from "../NewWishForm/NewWishForm";
 import WisherReducer from "./WishesReducer";
 import { WishListContext } from "../../HomePage";
+import {
+  IonItemSliding,
+  IonItemOptions,
+  IonItemOption,
+  IonItem,
+  IonIcon,
+} from "@ionic/react";
+import { closeSharp } from "ionicons/icons";
 
 export const WisherContext = createContext({} as any);
 
@@ -38,13 +51,6 @@ function WishListViwer() {
           .map((item: Wish, index: any) => {
             return <WishCard key={index} wishElement={item}></WishCard>;
           })}
-      {state && state.length == 0 && (
-        <img
-          className="empty-list-img"
-          alt="empty-wish"
-          src={emptyListLogo}
-        ></img>
-      )}
     </WisherContext.Provider>
   );
 }
