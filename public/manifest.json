@@ -1,6 +1,6 @@
 {
-  "short_name": "My List",
-  "name": "My List",
+  "short_name": "RawList",
+  "name": "RawList",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#fe7e5e",
+  "theme_color": "#000000",
   "background_color": "#ffffff"
 }

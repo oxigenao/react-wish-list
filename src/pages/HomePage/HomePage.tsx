@@ -44,15 +44,15 @@ function HomePage(props: any) {
     WishApi.getWisheLists()
       .then(async (res) => {
         if (!res || res.length === 0) {
-          WishApi.initWishList(userState.uid);
-          let lists = await WishApi.getWisheLists();
-          setWishLists(lists);
-          wishListDispatcher({ type: "load", payload: lists[0] });
+          // WishApi.initWishList(userState.uid);
+          // let lists = await WishApi.getWisheLists();
+          // setWishLists(lists);
+          // wishListDispatcher({ type: "load", payload: lists[0] });
         } else {
           setWishLists(res);
           wishListDispatcher({ type: "load", payload: res[0] });
+          setSelectedList(0);
         }
-        setSelectedList(0);
 
         setLoadingwishes(false);
       })
@@ -75,6 +75,27 @@ function HomePage(props: any) {
 
   return (
     <div className="home-container">
+      <div>
+        {selectedList == undefined && (
+          <IonButton
+            fill="outline"
+            onClick={async (ev) => {
+              let name = prompt("Please enter a list name", "My list Name");
+              if (name) {
+                WishApi.addWishList(userState.uid, name);
+                let newWL = await WishApi.getWisheLists();
+                setWishLists(newWL);
+                setSelectedList(0);
+                wishListDispatcher({ type: "load", payload: newWL[0] });
+              }
+            }}
+          >
+            Create new list
+            <IonIcon slot="end" icon={add}></IonIcon>
+          </IonButton>
+        )}
+      </div>
+
       {selectedList != undefined && !loadingWishes && (
         <div style={{ marginTop: "10px" }}>
           <div
@@ -106,8 +127,8 @@ function HomePage(props: any) {
               })}
             </IonSelect>
             <IonButton
-              style={{ display: "flex" }}
               fill="clear"
+              style={{ display: "flex" }}
               onClick={async (ev) => {
                 let name = prompt("Please enter a list name", "My list Name");
                 if (name) {

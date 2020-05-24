@@ -38,9 +38,6 @@ function NewWishForm() {
           setInputValue(evt.detail.value);
         }}
       ></IonInput>
-      <IonButton class="sendButton" fill="clear" onClick={createNewWish}>
-        <IonIcon icon={addSharp} slot="icon-only"></IonIcon>
-      </IonButton>
     </div>
   );
 }

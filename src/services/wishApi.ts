@@ -48,7 +48,6 @@ const WishApi = {
     } as WishList);
   },
   updateWishList: (wishList: WishList): Promise<any> => {
-    console.log("wishList", wishList);
     let auxData = { ...wishList };
     delete auxData.id;
     return db.collection(COLLECTION_DB).doc(wishList.id).set(auxData);

@@ -23,14 +23,15 @@
 .title-content {
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: center;
+  margin-top: 20px;
 
   .title-input {
-    text-align: left;
+    text-align: center;
     padding-left: 10px !important;
     display: flex;
     margin-right: 10px;
-    font-size: 18px;
+    font-size: 32px;
     font-weight: bold;
     margin: 10px;
   }

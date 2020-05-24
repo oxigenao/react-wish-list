@@ -1,3 +1,7 @@
+ion-item-slide {
+  transition: all 0.3s linear;
+}
+
 .wish-card {
   width: 300px;
   display: flex;
@@ -41,10 +45,8 @@
   width: 5px;
   height: 38px;
   background: #000000;
-  transition: transform 0.3s linear;
 }
 .disable-mark {
-  transition: transform 0.3s linear;
   transform: rotate(90deg);
   background: #cccccc;
 }

@@ -1,27 +1,28 @@
 .new-wish-form-container {
-  display: block;
+  display: flex;
   margin: auto;
   width: 100%;
   max-width: 320px;
   justify-content: center;
   position: relative;
+  padding: 10px;
+  height: 60px;
+  margin-left: "14px";
 
   ion-input {
     border-bottom: 3px solid black;
+    height: 40px;
   }
 
   .sendButton {
-    display: inline-block;
-    float: right;
+    display: flex;
     padding-right: 10px;
   }
 
   .input-form {
     width: 200px;
     outline: none;
-    position: absolute;
-    left: 6px;
-    top: 6px;
+    display: flex;
     text-align: left;
   }
 }

@@ -11,14 +11,6 @@ import WishCard from "../WishCard/WishCard";
 import NewWishForm from "../NewWishForm/NewWishForm";
 import WisherReducer from "./WishesReducer";
 import { WishListContext } from "../../HomePage";
-import {
-  IonItemSliding,
-  IonItemOptions,
-  IonItemOption,
-  IonItem,
-  IonIcon,
-} from "@ionic/react";
-import { closeSharp } from "ionicons/icons";
 
 export const WisherContext = createContext({} as any);
 
