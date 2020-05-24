@@ -32,7 +32,7 @@ function NewWishForm() {
           }
         }}
         class="input-form"
-        placeholder="Add new wish!"
+        placeholder="Add new item!"
         value={inputValue}
         onIonChange={(evt: any) => {
           setInputValue(evt.detail.value);
