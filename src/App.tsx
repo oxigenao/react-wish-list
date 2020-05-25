@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/navBar/navBar";
 import HomePage from "./pages/HomePage/HomePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
-import UserDataStore from "./hooks/userData/userDateStore";
 import GitHubLink from "./components/gitHubLink/gitHubLink";
+import { UserDataStore } from "./hooks/userData/userDataStore";
 
 function App() {
   return (

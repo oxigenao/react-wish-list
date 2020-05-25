@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { UserStateContext } from "../../hooks/userData/userDateStore";
+import React from "react";
+import { useUserDataStore } from "../../hooks/userData/userDataStore";
 import { UserStateAction } from "../../hooks/userData/userDataReducer";
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -7,7 +7,7 @@ import { IonButton, IonIcon, IonCard, IonCardHeader } from "@ionic/react";
 import { logoGoogle } from "ionicons/icons";
 import logo from "../../logo.svg";
 function LoginPage(props: any) {
-  const [state, dispatch] = useContext(UserStateContext);
+  const [state, dispatch] = useUserDataStore();
 
   const updateLoginParameter = function (username: string, uid: string) {
     dispatch({

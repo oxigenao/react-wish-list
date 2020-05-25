@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useContext } from "react";
 import Reducer, { PERSIST_USERDATA_TAG } from "./userDataReducer";
 
 const initialUserDataState: any = {
@@ -14,7 +14,7 @@ const getInitState = () => {
   );
 };
 
-const UserDataStore = ({ children }: any) => {
+export const UserDataStore = ({ children }: any) => {
   const [state, dispatch] = useReducer(Reducer, getInitState());
   return (
     <UserStateContext.Provider value={[state, dispatch]}>
@@ -24,4 +24,6 @@ const UserDataStore = ({ children }: any) => {
 };
 
 export const UserStateContext = createContext(initialUserDataState);
-export default UserDataStore;
+export function useUserDataStore() {
+  return useContext(UserStateContext);
+}

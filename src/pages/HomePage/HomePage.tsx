@@ -7,7 +7,10 @@ import React, {
 } from "react";
 import { WishList } from "../../models/wish";
 import WishApi from "../../services/wishApi";
-import { UserStateContext } from "../../hooks/userData/userDateStore";
+import {
+  UserStateContext,
+  useUserDataStore,
+} from "../../hooks/userData/userDataStore";
 import "./HomePage.scss";
 import "firebase/auth";
 import {
@@ -19,7 +22,7 @@ import {
   IonInput,
 } from "@ionic/react";
 import WishListViwer from "./components/WishListViwer/WishListViwer";
-import { add, createOutline, trashBinOutline } from "ionicons/icons";
+import { add } from "ionicons/icons";
 import WishListReducer from "./WishListsReducer";
 
 export const WishListContext = createContext({} as any);
@@ -29,7 +32,7 @@ function HomePage(props: any) {
   const [selectedList, setSelectedList] = useState<number | undefined>(
     undefined
   );
-  const [userState] = useContext(UserStateContext);
+  const [userState] = useUserDataStore();
   const [wishListState, wishListDispatcher] = useReducer(
     WishListReducer,
     undefined
@@ -43,12 +46,7 @@ function HomePage(props: any) {
     setLoadingwishes(true);
     WishApi.getWisheLists()
       .then(async (res) => {
-        if (!res || res.length === 0) {
-          // WishApi.initWishList(userState.uid);
-          // let lists = await WishApi.getWisheLists();
-          // setWishLists(lists);
-          // wishListDispatcher({ type: "load", payload: lists[0] });
-        } else {
+        if (res && res.length > 0) {
           setWishLists(res);
           wishListDispatcher({ type: "load", payload: res[0] });
           setSelectedList(0);
