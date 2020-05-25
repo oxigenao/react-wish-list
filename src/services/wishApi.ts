@@ -1,28 +1,26 @@
 import { Wish, WishList } from "../models/wish";
-import { db } from "..";
-import { from } from "rxjs";
+import { from, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { PERSIST_USERDATA_TAG } from "../hooks/userData/userDataReducer";
+import { db } from "../hooks/userData/userDataStore";
 const COLLECTION_DB = "WishLists";
 
 const WishApi = {
-  getWisheLists: (): Promise<any> => {
+  getWisheLists: (): Observable<any> => {
     return from(
       db
         .collection(COLLECTION_DB)
         .where("owner", "array-contains", getUserUid())
         .get()
-    )
-      .pipe(
-        map((querySnap) => {
-          let returnValue: Wish[] = [];
-          querySnap.forEach((res: any) => {
-            returnValue.push({ ...res.data(), id: res.id });
-          });
-          return returnValue;
-        })
-      )
-      .toPromise();
+    ).pipe(
+      map((querySnap) => {
+        let returnValue: Wish[] = [];
+        querySnap.forEach((res: any) => {
+          returnValue.push({ ...res.data(), id: res.id });
+        });
+        return returnValue;
+      })
+    );
   },
   getWisheListById: (id: string): Promise<any> => {
     return from(db.collection(COLLECTION_DB).doc(id).get())

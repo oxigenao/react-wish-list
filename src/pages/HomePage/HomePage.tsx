@@ -24,6 +24,7 @@ import {
 import WishListViwer from "./components/WishListViwer/WishListViwer";
 import { add } from "ionicons/icons";
 import WishListReducer from "./WishListsReducer";
+import { UserStateAction } from "../../hooks/userData/userDataReducer";
 
 export const WishListContext = createContext({} as any);
 
@@ -32,7 +33,7 @@ function HomePage(props: any) {
   const [selectedList, setSelectedList] = useState<number | undefined>(
     undefined
   );
-  const [userState] = useUserDataStore();
+  const [userState, userSateDispatcher] = useUserDataStore();
   const [wishListState, wishListDispatcher] = useReducer(
     WishListReducer,
     undefined
@@ -44,19 +45,15 @@ function HomePage(props: any) {
       props.history.push("/login");
     }
     setLoadingwishes(true);
-    WishApi.getWisheLists()
-      .then(async (res) => {
-        if (res && res.length > 0) {
-          setWishLists(res);
-          wishListDispatcher({ type: "load", payload: res[0] });
-          setSelectedList(0);
-        }
+    WishApi.getWisheLists().subscribe(async (res) => {
+      if (res && res.length > 0) {
+        setWishLists(res);
+        wishListDispatcher({ type: "load", payload: res[0] });
+        setSelectedList(0);
+      }
 
-        setLoadingwishes(false);
-      })
-      .catch(() => {
-        setLoadingwishes(false);
-      });
+      setLoadingwishes(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -81,7 +78,7 @@ function HomePage(props: any) {
               let name = prompt("Please enter a list name", "My list Name");
               if (name) {
                 WishApi.addWishList(userState.uid, name);
-                let newWL = await WishApi.getWisheLists();
+                let newWL = await WishApi.getWisheLists().toPromise();
                 setWishLists(newWL);
                 setSelectedList(0);
                 wishListDispatcher({ type: "load", payload: newWL[0] });
@@ -131,7 +128,7 @@ function HomePage(props: any) {
                 let name = prompt("Please enter a list name", "My list Name");
                 if (name) {
                   WishApi.addWishList(userState.uid, name);
-                  let newWL = await WishApi.getWisheLists();
+                  let newWL = await WishApi.getWisheLists().toPromise();
                   setWishLists(newWL);
                 }
               }}

@@ -12,9 +12,15 @@ const Reducer = (
       persistState(newState);
       return newState;
     case "UPDATE_STATE":
+      persistState({
+        ...action.payload,
+      });
       return {
         ...action.payload,
       };
+    case "CLEAN_STATE":
+      persistState({});
+      return {};
     default:
       return state;
   }
@@ -29,4 +35,5 @@ export const PERSIST_USERDATA_TAG = "UserDataState";
 export enum UserStateAction {
   MergeState = "MERGE_STATE",
   UpdateState = "UPDATE_STATE",
+  CleanState = "CLEAN_STATE",
 }
