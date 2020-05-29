@@ -22,7 +22,7 @@ import {
   IonInput,
 } from "@ionic/react";
 import WishListViwer from "./components/WishListViwer/WishListViwer";
-import { add } from "ionicons/icons";
+import { add, trashBinOutline, shareOutline } from "ionicons/icons";
 import WishListReducer from "./WishListsReducer";
 import { UserStateAction } from "../../hooks/userData/userDataReducer";
 
@@ -45,7 +45,7 @@ function HomePage(props: any) {
       props.history.push("/login");
     }
     setLoadingwishes(true);
-    WishApi.getWisheLists().subscribe(async (res) => {
+    WishApi.getWisheLists(userState).subscribe(async (res) => {
       if (res && res.length > 0) {
         setWishLists(res);
         wishListDispatcher({ type: "load", payload: res[0] });
@@ -77,8 +77,8 @@ function HomePage(props: any) {
             onClick={async (ev) => {
               let name = prompt("Please enter a list name", "My list Name");
               if (name) {
-                WishApi.addWishList(userState.uid, name);
-                let newWL = await WishApi.getWisheLists().toPromise();
+                WishApi.addWishList(userState.uid, userState.name, name);
+                let newWL = await WishApi.getWisheLists(userState).toPromise();
                 setWishLists(newWL);
                 setSelectedList(0);
                 wishListDispatcher({ type: "load", payload: newWL[0] });
@@ -127,8 +127,10 @@ function HomePage(props: any) {
               onClick={async (ev) => {
                 let name = prompt("Please enter a list name", "My list Name");
                 if (name) {
-                  WishApi.addWishList(userState.uid, name);
-                  let newWL = await WishApi.getWisheLists().toPromise();
+                  WishApi.addWishList(userState.uid, userState.name, name);
+                  let newWL = await WishApi.getWisheLists(
+                    userState
+                  ).toPromise();
                   setWishLists(newWL);
                 }
               }}
@@ -149,8 +151,16 @@ function HomePage(props: any) {
               value={wishListState && wishListState.name}
             ></IonInput>
 
-            {/* <IonButton
-              size="small"
+            <IonButton
+              fill="clear"
+              onClick={(ev) => {
+                props.history.push(`/share/${wishListState.id}`);
+              }}
+            >
+              <IonIcon icon={shareOutline} slot="icon-only"></IonIcon>
+            </IonButton>
+
+            <IonButton
               fill="clear"
               onClick={(ev) => {
                 if (
@@ -163,7 +173,7 @@ function HomePage(props: any) {
               }}
             >
               <IonIcon icon={trashBinOutline} slot="icon-only"></IonIcon>
-            </IonButton> */}
+            </IonButton>
           </div>
           {wishListState && (
             <WishListContext.Provider

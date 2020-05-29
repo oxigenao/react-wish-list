@@ -10,6 +10,6 @@ export interface WishList {
   name: string;
   wishes: Wish[];
   id?: string;
-  onwer?: string[];
-  onwerEmail?: string[];
+  owner?: { id: string; name: string }[];
+  ownerEmail?: string[];
 }
