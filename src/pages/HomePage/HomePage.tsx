@@ -154,9 +154,13 @@ function HomePage(props: any) {
             <IonButton
               fill="clear"
               onClick={(ev) => {
-                window.alert(
-                  `share this link: ${window.location.href}/share/${wishListState.id} `
-                );
+                navigator.clipboard
+                  .writeText(
+                    `${window.location.href}share/${wishListState.id} `
+                  )
+                  .then(function () {
+                    window.alert(`Link copied to clipboard`);
+                  });
               }}
             >
               <IonIcon icon={shareOutline} slot="icon-only"></IonIcon>
