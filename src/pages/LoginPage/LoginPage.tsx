@@ -9,10 +9,10 @@ import logo from "../../logo.svg";
 function LoginPage(props: any) {
   const [state, dispatch] = useUserDataStore();
 
-  const updateLoginParameter = function (username: string, uid: string) {
+  const updateLoginParameter = function (username: string, id: string) {
     dispatch({
       type: UserStateAction.MergeState,
-      payload: { name: username, uid: uid },
+      payload: { name: username, id: id },
     });
     props.history.push("/");
   };

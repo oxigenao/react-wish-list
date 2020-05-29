@@ -11,6 +11,7 @@ import WishCard from "../WishCard/WishCard";
 import NewWishForm from "../NewWishForm/NewWishForm";
 import WisherReducer from "./WishesReducer";
 import { WishListContext } from "../../HomePage";
+import SharedPeople from "../SharedPeople/SharedPeople";
 
 export const WisherContext = createContext({} as any);
 
@@ -31,6 +32,7 @@ function WishListViwer() {
 
   return (
     <WisherContext.Provider value={dispatch}>
+      <SharedPeople users={wishListState.owner}></SharedPeople>
       <NewWishForm></NewWishForm>
       {state &&
         state

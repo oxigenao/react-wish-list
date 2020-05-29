@@ -13,7 +13,7 @@ const WishApi = {
       db
         .collection(COLLECTION_DB)
         .where("owner", "array-contains", {
-          id: userState.uid,
+          id: userState.id,
           name: userState.name,
         })
         .get()
@@ -51,7 +51,7 @@ const WishApi = {
   initWishList: (userState: UserData): Promise<any> => {
     return db.collection(COLLECTION_DB).add({
       name: "My wishList",
-      owner: [{ id: userState.uid, name: userState.name }],
+      owner: [{ id: userState.id, name: userState.name }],
       wishes: [],
     } as WishList);
   },
@@ -65,7 +65,7 @@ const WishApi = {
     console.log("auxData", auxData);
     auxData.owner = [
       ...(auxData.owner || []),
-      { id: userState.uid, name: userState.name },
+      { id: userState.id, name: userState.name },
     ];
     delete auxData.id;
     console.log("auxData", auxData);

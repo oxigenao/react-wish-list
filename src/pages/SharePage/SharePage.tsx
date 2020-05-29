@@ -15,7 +15,7 @@ function SharePage(props: any) {
   }, []);
 
   useEffect(() => {
-    if (!state.uid) {
+    if (!state.id) {
       props.history.push("/login");
     }
     fetchData();

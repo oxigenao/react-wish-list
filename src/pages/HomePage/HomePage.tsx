@@ -41,7 +41,7 @@ function HomePage(props: any) {
   const [loadingWishes, setLoadingwishes] = useState(false);
 
   useEffect(() => {
-    if (!userState.uid) {
+    if (!userState.id) {
       props.history.push("/login");
     }
     setLoadingwishes(true);
@@ -77,7 +77,7 @@ function HomePage(props: any) {
             onClick={async (ev) => {
               let name = prompt("Please enter a list name", "My list Name");
               if (name) {
-                WishApi.addWishList(userState.uid, userState.name, name);
+                WishApi.addWishList(userState.id, userState.name, name);
                 let newWL = await WishApi.getWisheLists(userState).toPromise();
                 setWishLists(newWL);
                 setSelectedList(0);
@@ -127,7 +127,7 @@ function HomePage(props: any) {
               onClick={async (ev) => {
                 let name = prompt("Please enter a list name", "My list Name");
                 if (name) {
-                  WishApi.addWishList(userState.uid, userState.name, name);
+                  WishApi.addWishList(userState.id, userState.name, name);
                   let newWL = await WishApi.getWisheLists(
                     userState
                   ).toPromise();
@@ -154,13 +154,15 @@ function HomePage(props: any) {
             <IonButton
               fill="clear"
               onClick={(ev) => {
-                props.history.push(`/share/${wishListState.id}`);
+                window.alert(
+                  `share this link: ${window.location.href}/share/${wishListState.id} `
+                );
               }}
             >
               <IonIcon icon={shareOutline} slot="icon-only"></IonIcon>
             </IonButton>
 
-            <IonButton
+            {/* <IonButton
               fill="clear"
               onClick={(ev) => {
                 if (
@@ -173,7 +175,7 @@ function HomePage(props: any) {
               }}
             >
               <IonIcon icon={trashBinOutline} slot="icon-only"></IonIcon>
-            </IonButton>
+            </IonButton> */}
           </div>
           {wishListState && (
             <WishListContext.Provider

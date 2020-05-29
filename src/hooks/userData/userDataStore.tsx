@@ -9,7 +9,7 @@ import "firebase/firestore";
 const initialUserDataState: any = {
   name: undefined,
   accessToken: undefined,
-  uid: undefined,
+  id: undefined,
 };
 
 const getInitState = () => {
