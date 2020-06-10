@@ -20,6 +20,7 @@ import {
   IonIcon,
   IonButton,
   IonInput,
+  IonSpinner,
 } from "@ionic/react";
 import WishListViwer from "./components/WishListViwer/WishListViwer";
 import { add, trashBinOutline, shareOutline } from "ionicons/icons";
@@ -70,8 +71,9 @@ function HomePage(props: any) {
 
   return (
     <div className="home-container">
+      {loadingWishes && <IonSpinner></IonSpinner>}
       <div>
-        {selectedList == undefined && (
+        {selectedList == undefined && !loadingWishes && (
           <IonButton
             fill="outline"
             onClick={async (ev) => {

@@ -15,7 +15,11 @@ import { Wish } from "../../../../models/wish";
 import { trashBinOutline, closeSharp } from "ionicons/icons";
 import { WisherContext } from "../WishListViwer/WishListViwer";
 
-function WishCard(props: { wishElement: Wish }) {
+export interface WishCardsProps {
+  wishElement: Wish;
+}
+
+function WishCard(props: WishCardsProps) {
   const [editable, setEditable] = useState(false);
   const dispatch = useContext(WisherContext);
   const itemRef: any = useRef(null);
