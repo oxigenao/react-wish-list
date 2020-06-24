@@ -7,9 +7,9 @@ import * as serviceWorker from "./serviceWorker";
 import { applyPolyfills, defineCustomElements } from "@ionic/core/loader";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <App />,
+  // </React.StrictMode>,
   document.getElementById("root")
 );
 

@@ -14,9 +14,10 @@ function SharedPeople(props: { users: UserData[] }) {
         paddingLeft: "15px",
       }}
     >
-      {props.users.map((user) => {
+      {props.users.map((user, index) => {
         return (
           <div
+            key={index}
             style={{
               display: "flex",
               width: "30px",

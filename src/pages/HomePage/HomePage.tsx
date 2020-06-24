@@ -23,9 +23,16 @@ import {
   IonSpinner,
 } from "@ionic/react";
 import WishListViwer from "./components/WishListViwer/WishListViwer";
-import { add, trashBinOutline, shareOutline } from "ionicons/icons";
+import {
+  add,
+  trashBinOutline,
+  shareOutline,
+  removeSharp,
+  trashOutline,
+} from "ionicons/icons";
 import WishListReducer from "./WishListsReducer";
 import { UserStateAction } from "../../hooks/userData/userDataReducer";
+import { StorageManager } from "../../services/storageManager";
 
 export const WishListContext = createContext({} as any);
 
@@ -46,13 +53,20 @@ function HomePage(props: any) {
       props.history.push("/login");
     }
     setLoadingwishes(true);
-    WishApi.getWisheLists(userState).subscribe(async (res) => {
+    WishApi.getWisheLists(userState).subscribe(async (res: WishList[]) => {
       if (res && res.length > 0) {
         setWishLists(res);
-        wishListDispatcher({ type: "load", payload: res[0] });
-        setSelectedList(0);
+        let selectedHistoric = res.findIndex(
+          (w) => w.id == StorageManager.getValue("selectedList")
+        );
+        if (StorageManager.getValue("selectedList") && selectedHistoric != -1) {
+          setSelectedList(selectedHistoric);
+          wishListDispatcher({ type: "load", payload: res[selectedHistoric] });
+        } else {
+          setSelectedList(0);
+          wishListDispatcher({ type: "load", payload: res[0] });
+        }
       }
-
       setLoadingwishes(false);
     });
   }, []);
@@ -83,6 +97,7 @@ function HomePage(props: any) {
                 let newWL = await WishApi.getWisheLists(userState).toPromise();
                 setWishLists(newWL);
                 setSelectedList(0);
+                StorageManager.storeValue("selectedList", wishLists[0].id);
                 wishListDispatcher({ type: "load", payload: newWL[0] });
               }
             }}
@@ -109,6 +124,11 @@ function HomePage(props: any) {
               value={selectedList}
               onIonChange={(ev) => {
                 setSelectedList(ev.detail.value);
+                StorageManager.storeValue(
+                  "selectedList",
+                  wishLists[ev.detail.value].id
+                );
+
                 wishListDispatcher({
                   type: "load",
                   payload: wishLists[ev.detail.value],
@@ -138,6 +158,19 @@ function HomePage(props: any) {
               }}
             >
               <IonIcon slot="icon-only" icon={add}></IonIcon>
+            </IonButton>
+            <IonButton
+              fill="clear"
+              style={{ display: "flex" }}
+              onClick={async (ev) => {
+                let confirmation = window.confirm(
+                  "Are you sure you want to delete this list?"
+                );
+                setWishLists(wishLists.splice(selectedList, 1));
+                setSelectedList(wishLists.length > 0 ? 0 : undefined);
+              }}
+            >
+              <IonIcon slot="icon-only" icon={trashOutline}></IonIcon>
             </IonButton>
           </div>
 
