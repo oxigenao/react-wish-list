@@ -20,7 +20,7 @@
     "firebase": "^7.14.2",
     "import": "0.0.6",
     "ionicons": "^5.0.1",
-    "node-sass": "^4.14.0",
+    "node-sass": "^7.0.0",
     "path": "^0.12.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
